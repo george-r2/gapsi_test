@@ -57,8 +57,19 @@ public class ItemBussinessImpl implements IItemBussiness {
 	}
 
 	public void updateItem(ItemBean item) throws JamaException {
-		// TODO Auto-generated method stub
-
+		LOGGER.info(this.getClass().getSimpleName()+"_updateItem_START");
+		Item iModel ;
+		try {
+			iModel = itemRepository.findById(item.getId());
+		}catch(Exception e) {
+			LOGGER.warn("Error al acceder a la bd");
+			DataAccessException ex = new DataAccessException(e.getClass().getSimpleName(),e.getMessage());
+			throw ex;
+		}
+		if(iModel==null) {
+			LOGGER.warn("No se encontro un item con el id:"+item.getId());
+			throw new NonExistingItemException();
+		}
 	}
 
 }

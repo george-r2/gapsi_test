@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
@@ -31,5 +32,16 @@ public class ConfigurationApp extends WebMvcConfigurerAdapter{
 	public  PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
 		PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
 		return configurer;
+	}
+	
+	
+	//para swagger
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	    registry.addResourceHandler("swagger-ui.html")
+	      .addResourceLocations("classpath:/META-INF/resources/");
+	 
+	    registry.addResourceHandler("/webjars/**")
+	      .addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 }

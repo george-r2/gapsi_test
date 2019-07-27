@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,6 +48,17 @@ public class ItemRest {
 		LOGGER.info(this.getClass().getSimpleName()+"_saveItem_START");
 		ResponseEntity<Response> response =null;
 		itemBusiness.createItem(item);;
+		Response responseBean = new Response();	
+		responseBean.setSuccess(true);
+		response = new ResponseEntity<Response>(responseBean,HttpStatus.OK);
+		return response;
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<Response> updateItem(@Valid @RequestBody ItemBean item) throws JamaException{
+		LOGGER.info(this.getClass().getSimpleName()+"_updateItem_START");
+		ResponseEntity<Response> response =null;
+		itemBusiness.updateItem(item);;
 		Response responseBean = new Response();	
 		responseBean.setSuccess(true);
 		response = new ResponseEntity<Response>(responseBean,HttpStatus.OK);
