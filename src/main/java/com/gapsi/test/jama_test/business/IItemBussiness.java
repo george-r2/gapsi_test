@@ -1,5 +1,7 @@
 package com.gapsi.test.jama_test.business;
 
+import java.util.List;
+
 import com.gapsi.test.jama_test.beans.ItemBean;
 import com.gapsi.test.jama_test.exception.DataAccessException;
 import com.gapsi.test.jama_test.exception.JamaException;
@@ -13,5 +15,12 @@ public interface IItemBussiness {
 	void createItem(ItemBean item) throws JamaException;
 	
 	void updateItem(ItemBean item) throws JamaException;
+	
+	void deleteItem(Long id) throws JamaException;
+	
+	
+	List<ItemBean> findAll();
+	
+	
 	
 }

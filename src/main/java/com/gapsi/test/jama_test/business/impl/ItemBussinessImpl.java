@@ -1,5 +1,8 @@
 package com.gapsi.test.jama_test.business.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,6 +59,7 @@ public class ItemBussinessImpl implements IItemBussiness {
 		
 	}
 
+	@Override
 	public void updateItem(ItemBean item) throws JamaException {
 		LOGGER.info(this.getClass().getSimpleName()+"_updateItem_START");
 		Item iModel ;
@@ -68,7 +72,38 @@ public class ItemBussinessImpl implements IItemBussiness {
 		}
 		if(iModel==null) {
 			LOGGER.warn("No se encontro un item con el id:"+item.getId());
-			throw new NonExistingItemException();
+			throw new NonExistingItemException("","No se encontro un item con el id:"+item.getId());
+		}
+		iModel.setModel(item.getModel());
+		iModel.setDescr(item.getDesc());
+		
+		itemRepository.save(iModel);
+	}
+
+	@Override
+	public List<ItemBean> findAll() {
+		List<Item> itemList = itemRepository.findAll();
+		List<ItemBean> l = new ArrayList<ItemBean>();
+		for(Item i:itemList) {
+			l.add(Utils.itemToItemBean(i));
+		}
+		return l;
+	}
+
+	@Override
+	public void deleteItem(Long id) throws JamaException {
+		Item iModel ;
+		try {
+			iModel = itemRepository.findById(id);
+			if(iModel==null) {
+				LOGGER.warn("No se encontro un item con el id:"+id);
+				throw new NonExistingItemException("","No se encontro un item con el id:"+id);
+			}
+			itemRepository.delete(iModel);
+		}catch(Exception e) {
+			LOGGER.warn("Error al acceder a la bd");
+			DataAccessException ex = new DataAccessException(e.getClass().getSimpleName(),e.getMessage());
+			throw ex;
 		}
 	}
 
